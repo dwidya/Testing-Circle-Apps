@@ -1,7 +1,7 @@
 export interface IUsers {
     id?:number
     username: string;
-    fullName: string;
+    full_name: string;
     email: string;
-    photo_profile?: string
+    photo_profile: string
   }

@@ -1,13 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { IUsers } from "../types/UserInterface";
 
-const initialUserSlice: {data: IUsers} = {
-    data: {
-        username: "",
-        fullName: "",
-        email: "",
-        photo_profile: ""
-    }
+const data: IUsers[] = []
+const initialUserSlice = {
+    data
 }
 
 export const usersSlice = createSlice({

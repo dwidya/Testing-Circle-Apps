@@ -30,47 +30,48 @@ import {
 } from "react-icons/bi";
 
 import api from "../libs/api";
+import { useDispatch } from "react-redux";
+import { GET_USERS } from "../store/types/RootReducer";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/types";
 
 
 const MyProfile: React.FC = () => {
+const dispatch = useDispatch();
+
+const users= useSelector((state: RootState) => state.user.data)
+console.log(users);
+
+
+
+
+  useEffect (() => {
   
-  const token = localStorage.getItem("token")
-  const fetchSuggestion = async () => {
-    console.log('hfgjghfhjghghhgjhgh');
     
+    fetchSuggestion()
+    
+  },[])
+  
+  const fetchSuggestion = async () => {    
     try {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        }
-      }
-      const response = await api.get('/users', config)
+        
 
+    
 
-      console.log("suggestion", response)
-      // const datas= respone.data.data
-      // console.log("data:",datas);
+      const response = await api.get('/users')
+      console.log(response);
+      // const data= response
+      console.log("testing");
 
-      // const filtered = datas.filter((user: any ) => user.id ! = user.id)
-      // console.log("filtred:", filtered);
-      // set (filtered)
+      dispatch(GET_USERS(response.data)) 
       
-      
-      
-      
+    
     } catch (error) {
       console.log(error);
     }
 
-    useEffect (() => {
-      console.log("token", token);
-      
-      fetchSuggestion()
-    },[])
 
   }
-
-
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const secondaryText = useColorModeValue("gray.400", "gray.400");
@@ -171,18 +172,25 @@ const MyProfile: React.FC = () => {
         </Text>
 
 
-          <HStack justify="space-between"  mt="8px" bgColor={"white"}>
+
+      
+          
+          {users.map((user )=>(
+
+
+
+            <HStack justify="space-between"  mt="8px" bgColor={"white"}>
       <HStack spacing={3} >
 
         
         
-        <Avatar size="lg" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbcFCCxRwrtRcsjHh-Ale1WxalyeovEVonk98xMKIuGQ&s" mt={"3"} mr={"23"}/>
+        <Avatar size="lg" src={!user.photo_profile?"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbcFCCxRwrtRcsjHh-Ale1WxalyeovEVonk98xMKIuGQ&s": user.photo_profile} mt={"3"} mr={"23"}/>
         <Stack spacing={-4}>
           <Text fontSize="xl" color="black" mt={"3"}>
-          full_name
+            {user.full_name}
           </Text>
           <Text color="black" fontSize="sm" mt="1">
-           @username
+           @{user.username}
           </Text>
         </Stack>
       </HStack>
@@ -194,6 +202,7 @@ const MyProfile: React.FC = () => {
         >Following
       </Button>
       </HStack>
+          ))}
  
  
 
